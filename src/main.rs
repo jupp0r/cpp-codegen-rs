@@ -6,7 +6,7 @@ extern crate clang;
 extern crate clap;
 
 use clang::{Clang, Index};
-use clap::{App, Arg, SubCommand};
+use clap::{App, Arg};
 use handlebars::Handlebars;
 
 use std::path::Path;
