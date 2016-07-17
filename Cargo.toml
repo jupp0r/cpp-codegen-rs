@@ -3,4 +3,10 @@ name = "cpp-codegen"
 version = "0.1.0"
 authors = ["Jupp Müller <jupp0r@gmail.com>"]
 
-[dependencies]
+[dependencies.clang]
+version = "*"
+features = ["clang_3_8", "static"]
+
+[dependencies.clang-sys]
+version = "*"
+features = ["clang_3_8", "static"]
