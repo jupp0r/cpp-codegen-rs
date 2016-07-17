@@ -11,8 +11,10 @@ use handlebars::Handlebars;
 
 use std::path::Path;
 use std::error::Error;
+use std::boxed::Box;
 
 mod model;
+mod template;
 
 fn main() {
     let matches = App::new("cpp-codegen-rs")
@@ -20,15 +22,15 @@ fn main() {
         .author("Jupp Müller <jupp0r@gmail.com>")
         .about("Generate code or documentation from C++ interfaces")
         .arg(Arg::with_name("template")
-             .short("t")
-             .long("template")
-             .multiple(true)
-             .required(true)
-             .help("Template to render")
-             .takes_value(true))
+            .short("t")
+            .long("template")
+            .multiple(true)
+            .required(true)
+            .help("Template to render")
+            .takes_value(true))
         .arg(Arg::with_name("INPUT")
-             .help("C++ interface to use as model")
-             .required(true))
+            .help("C++ interface to use as model")
+            .required(true))
         .get_matches();
 
     let clang = Clang::new().unwrap();
@@ -44,7 +46,10 @@ fn main() {
     handlebars.register_template_file("template", &Path::new(template))
         .ok()
         .unwrap();
+    handlebars.register_helper("len",
+                               Box::new(template::len));
 
-    let output = handlebars.render("template", &model).unwrap_or_else( | e | e.description().to_owned());
+    let output = handlebars.render("template", &model)
+        .unwrap_or_else(|e| e.description().to_owned());
     println!("{}", output);
 }

@@ -47,7 +47,7 @@ fn build_model(model: &mut Model, node: Entity, parent: Entity) -> EntityVisitRe
     }
 
     if !is_interface(node) {
-        return EntityVisitResult::Continue;
+        return EntityVisitResult::Recurse;
     }
 
     if node.get_kind() == EntityKind::StructDecl {
@@ -105,7 +105,8 @@ fn parse_argument(t: Entity) -> Argument {
 }
 
 fn is_interface(node: Entity) -> bool {
-    node.get_children().into_iter().all(|method| {
-        method.get_kind() == EntityKind::Destructor || !method.is_pure_virtual_method()
-    })
+    let res = node.get_children().into_iter().all(|method| {
+        method.get_kind() == EntityKind::Destructor || method.is_pure_virtual_method()
+    });
+    res
 }
