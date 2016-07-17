@@ -1,7 +1,13 @@
 [package]
-name = "cpp-codegen"
+name = "cpp-codegen-rs"
 version = "0.1.0"
 authors = ["Jupp Müller <jupp0r@gmail.com>"]
+
+[dependencies]
+serde = "*"
+serde_json = "*"
+serde_macros = "*"
+clap = "*"
 
 [dependencies.clang]
 version = "*"
@@ -10,3 +16,7 @@ features = ["clang_3_8", "static"]
 [dependencies.clang-sys]
 version = "*"
 features = ["clang_3_8", "static"]
+
+[dependencies.handlebars]
+version = "*"
+features = ["serde_type"]

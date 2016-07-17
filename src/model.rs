@@ -1,28 +1,28 @@
-use clang::{Entity, Type, EntityKind, EntityVisitResult, TranslationUnit};
+use clang::{Entity, EntityKind, EntityVisitResult, TranslationUnit};
 use std::vec::Vec;
 use std::string::String;
 use std::option::Option;
 
-#[derive(Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Model {
     interfaces: Vec<Interface>,
 }
 
-#[derive(Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Interface {
     name: String,
     namespaces: Vec<String>,
     methods: Vec<Method>,
 }
 
-#[derive(Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Method {
     name: String,
     return_type: String,
     arguments: Vec<Argument>,
 }
 
-#[derive(Debug)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Argument {
     name: Option<String>,
     argument_type: String,

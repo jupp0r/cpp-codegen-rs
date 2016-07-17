@@ -1,0 +1,19 @@
+// THIS FILE IS GENERATED, CHANGING IT IS FUTILE
+
+#include <gmock/gmock.h>
+
+{{#each interfaces}}
+{{#each namespaces}}
+namespace {{this}} {
+{{/each}}
+class Mock{{name}} : public {{name}}
+{
+{{#each methods}}
+MOCK_METHOD{{length arguments}}({{return_type}}({{#each arguments}}{{argument_type}}{{/each}});
+{{/each}}
+}
+{{#each namespaces}}
+}
+{{/each}}
+
+{{/each}}
