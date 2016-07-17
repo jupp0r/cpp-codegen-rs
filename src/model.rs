@@ -105,7 +105,7 @@ fn parse_argument(t: Entity) -> Argument {
 }
 
 fn is_interface(node: Entity) -> bool {
-    node.get_children().into_iter().any(|method| {
+    node.get_children().into_iter().all(|method| {
         method.get_kind() == EntityKind::Destructor || !method.is_pure_virtual_method()
     })
 }
