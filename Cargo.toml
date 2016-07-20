@@ -1,7 +1,11 @@
 [package]
 name = "cpp-codegen-rs"
+name = "cpp_codegen_rs"
 version = "0.1.0"
 authors = ["Jupp Müller <jupp0r@gmail.com>"]
+
+[dev-dependencies]
+tempdir = "*"
 
 [dependencies]
 serde = "*"

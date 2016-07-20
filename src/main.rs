@@ -5,7 +5,11 @@ extern crate handlebars;
 extern crate clang;
 extern crate clap;
 
+#[cfg(test)]
+extern crate tempdir;
+
 use clang::{Clang, Index};
+
 use clap::{App, Arg};
 use handlebars::Handlebars;
 
@@ -13,8 +17,9 @@ use std::path::Path;
 use std::error::Error;
 use std::boxed::Box;
 
-mod model;
-mod template;
+pub mod model;
+pub mod template;
+mod parser_tests;
 
 fn main() {
     let matches = App::new("cpp-codegen-rs")
