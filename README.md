@@ -1,4 +1,4 @@
-A Code Generator for C++ Interfaces
+A Code Generator for C++ Interfaces [![Build Status](https://travis-ci.org/jupp0r/cpp-codegen-rs.svg?branch=master)](https://travis-ci.org/jupp0r/cpp-codegen-rs)
 ===================================
 cpp-codegen-rs uses libclang to read C++ class definitions and
 generate code. Example use cases include the generation of Google Mock
