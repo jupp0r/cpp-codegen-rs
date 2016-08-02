@@ -56,8 +56,6 @@ fn build_model(model: &mut Model, node: Entity, parent: Entity) -> EntityVisitRe
         return EntityVisitResult::Recurse;
     }
 
-    println!("{:?}, type: {:?}", node, node.get_type());
-
     match node.get_kind() {
         EntityKind::StructDecl |
         EntityKind::ClassDecl |
