@@ -6,10 +6,14 @@
 {{#each namespaces ~}}
 namespace {{this}} {
 {{/each ~}}
-class Mock{{name}} : public {{name}}
-{
+
+{{#if template_parameters ~}}
+template
+<{{#each template_parameters ~}} typename {{type_name}}{{#unless @last}}, {{/unless}}{{/each ~}}>
+{{/if ~}}
+class Mock{{name}} : public {{name}} {
 {{#each methods ~}}
-MOCK_METHOD{{len arguments}}({{return_type}}({{#each arguments}}{{argument_type}}{{/each}});
+    MOCK_METHOD{{len arguments}}({{name}}, {{return_type}}({{#each arguments}}{{argument_type}}{{#unless @last}}, {{/unless}}{{/each}}));
 {{/each ~}}
 };
 {{#each namespaces~}}

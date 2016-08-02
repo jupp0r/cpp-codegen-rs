@@ -38,21 +38,24 @@ fn main() {
             .required(true))
         .get_matches();
 
-    let clang = Clang::new().unwrap();
+    let clang = Clang::new().expect("create clang parser");
     let index = Index::new(&clang, false, false);
-    let input = matches.value_of("INPUT").unwrap();
-    let tu = index.parser(input).arguments(&[&"-x", &"c++"]).parse().unwrap();
+    let input = matches.value_of("INPUT").expect("input missing");
+    let tu = match index.parser(input).arguments(&[&"-x", &"c++"]).parse() {
+        Ok(x) => x,
+        Err(e) => panic!(format!("{:?}", e)),
+    };
     let model = model::Model::new(&tu);
 
-    let mut handlebars = Handlebars::new();
-    let templates = matches.values_of("template").unwrap().collect::<Vec<_>>();
-    let template = templates[0];
+    let template_file_name = matches.values_of("template").unwrap().nth(0).unwrap();
 
-    handlebars.register_template_file("template", &Path::new(template))
-        .ok()
-        .unwrap();
-    handlebars.register_helper("len",
-                               Box::new(template::len));
+    let mut handlebars = Handlebars::new();
+    handlebars.register_helper("len", Box::new(template::len));
+
+    match handlebars.register_template_file("template", &Path::new(template_file_name)) {
+        Err(e) => panic!(format!("{:?}", e)),
+        _ => (),
+    };
 
     let output = handlebars.render("template", &model)
         .unwrap_or_else(|e| e.description().to_owned());
