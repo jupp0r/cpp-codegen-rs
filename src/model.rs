@@ -3,29 +3,35 @@ use std::vec::Vec;
 use std::string::String;
 use std::option::Option;
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
 pub struct Model {
-    interfaces: Vec<Interface>,
+    pub interfaces: Vec<Interface>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
 pub struct Interface {
-    name: String,
-    namespaces: Vec<String>,
-    methods: Vec<Method>,
+    pub name: String,
+    pub namespaces: Vec<String>,
+    pub methods: Vec<Method>,
+    pub template_parameters: Option<Vec<TemplateParameter>>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
 pub struct Method {
-    name: String,
-    return_type: String,
-    arguments: Vec<Argument>,
+    pub name: String,
+    pub return_type: String,
+    pub arguments: Vec<Argument>,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
 pub struct Argument {
-    name: Option<String>,
-    argument_type: String,
+    pub name: Option<String>,
+    pub argument_type: String,
+}
+
+#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
+pub struct TemplateParameter {
+    pub type_name: String,
 }
 
 impl Model {
@@ -50,15 +56,21 @@ fn build_model(model: &mut Model, node: Entity, parent: Entity) -> EntityVisitRe
         return EntityVisitResult::Recurse;
     }
 
-    if node.get_kind() == EntityKind::StructDecl {
-        model.interfaces.push(Interface {
-            name: node.get_name().unwrap_or("unknown".to_string()),
-            namespaces: parse_namespaces(parent),
-            methods: parse_pure_virtual_methods(node),
-        });
-        EntityVisitResult::Continue
-    } else {
-        EntityVisitResult::Recurse
+    println!("{:?}, type: {:?}", node, node.get_type());
+
+    match node.get_kind() {
+        EntityKind::StructDecl |
+        EntityKind::ClassDecl |
+        EntityKind::ClassTemplate => {
+            model.interfaces.push(Interface {
+                name: node.get_name().unwrap(),
+                namespaces: parse_namespaces(parent),
+                methods: parse_virtual_methods(node),
+                template_parameters: parse_template_parameters(node),
+            });
+            EntityVisitResult::Continue
+        }
+        _ => EntityVisitResult::Recurse,
     }
 }
 
@@ -76,10 +88,13 @@ fn parse_namespaces(node: Entity) -> Vec<String> {
     namespace_list
 }
 
-fn parse_pure_virtual_methods(node: Entity) -> Vec<Method> {
+fn parse_virtual_methods(node: Entity) -> Vec<Method> {
     node.get_children()
         .into_iter()
-        .filter(|method| method.is_pure_virtual_method())
+        .filter(|method| {
+            method.is_virtual_method() && method.get_kind() != EntityKind::Destructor &&
+            method.get_kind() != EntityKind::Constructor
+        })
         .map(parse_method)
         .collect::<Vec<_>>()
 }
@@ -104,9 +119,28 @@ fn parse_argument(t: Entity) -> Argument {
     }
 }
 
+fn parse_template_parameters(t: Entity) -> Option<Vec<TemplateParameter>> {
+    let params = t.get_children()
+        .into_iter()
+        .filter_map(|x: Entity| {
+            match x.get_kind() {
+                EntityKind::TemplateTypeParameter => {
+                    Some(TemplateParameter { type_name: x.get_name().unwrap() })
+                }
+                _ => None,
+            }
+        })
+        .collect::<Vec<_>>();
+    if params.is_empty() {
+        None
+    } else {
+        Some(params)
+    }
+}
+
 fn is_interface(node: Entity) -> bool {
-    let res = node.get_children().into_iter().all(|method| {
-        method.get_kind() == EntityKind::Destructor || method.is_pure_virtual_method()
-    });
+    let res = node.get_children()
+        .into_iter()
+        .all(|method| method.get_kind() != EntityKind::Method || method.is_virtual_method());
     res
 }

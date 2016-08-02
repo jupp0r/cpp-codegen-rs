@@ -16,3 +16,34 @@ pub fn len(_: &Context,
     try!(rc.writer.write(rendered.into_bytes().as_ref()));
     Ok(())
 }
+
+pub fn join(
+    _: &Context,
+    h: &Helper,
+    _: &Handlebars,
+    rc: &mut RenderContext)
+    -> Result<(), RenderError> {
+    let empty = vec![];
+    let param = h.param(0).unwrap();
+    let array = match param.value() {
+        &Value::Array(ref a) => a,
+        _ => &empty,
+    };
+
+    let separator = match h.param(1) {
+        Some(x) =>
+            match x.value() {
+                &Value::String(ref s) => s,
+                _ => ",",
+            },
+        None => ",",
+    };
+
+    let rendered = array
+        .into_iter()
+        .map(|x| format!("{:?}", x))
+        .collect::<Vec<String>>()
+        .join(separator);
+    try!(rc.writer.write(rendered.into_bytes().as_ref()));
+    Ok(())
+}
