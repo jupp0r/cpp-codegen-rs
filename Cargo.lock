@@ -2,9 +2,10 @@
 name = "cpp_codegen_rs"
 version = "0.1.0"
 dependencies = [
- "clang 0.11.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "clang 0.12.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "clap 2.10.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "handlebars 0.20.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "rand 0.3.14 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde_json 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde_macros 0.8.0 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -26,7 +27,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "aster"
-version = "0.22.0"
+version = "0.22.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
@@ -36,17 +37,17 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "clang"
-version = "0.11.0"
+version = "0.12.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "clang-sys 0.9.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "clang-sys 0.10.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "lazy_static 0.2.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "libc 0.2.14 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
 name = "clang-sys"
-version = "0.9.0"
+version = "0.10.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "bitflags 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -155,7 +156,7 @@ name = "quasi_codegen"
 version = "0.16.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "aster 0.22.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "aster 0.22.1 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -211,7 +212,7 @@ name = "serde_codegen"
 version = "0.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
- "aster 0.22.0 (registry+https://github.com/rust-lang/crates.io-index)",
+ "aster 0.22.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "quasi 0.16.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "quasi_macros 0.16.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde_codegen_internals 0.5.0 (registry+https://github.com/rust-lang/crates.io-index)",

@@ -7,6 +7,7 @@ mod tests {
     use clang::{Clang, Index};
     use tempdir::TempDir;
 
+    use serde_json;
 
     const INTERFACE: &'static str = r#"
 #pragma once
@@ -83,5 +84,22 @@ class Baz {
                    vec![TemplateParameter { type_name: "T".to_string() },
                         TemplateParameter { type_name: "U".to_string() },
                         TemplateParameter { type_name: "V".to_string() }]);
+    }
+
+    #[test]
+    fn should_generate_random_names_for_anonymous_method_arguments() {
+
+        const INTERFACE_WITH_NAMELESS_ARGUMENT_METHODS: &'static str = r#"
+            #pragma once
+
+            struct Foo {
+                virtual void noArgumentName(double) = 0;
+            };
+            "#;
+
+        let model = create_model(INTERFACE_WITH_NAMELESS_ARGUMENT_METHODS);
+        assert!(serde_json::ser::to_string(&model.interfaces[0].methods[0].arguments[0].name)
+            .unwrap()
+            .len() > 0)
     }
 }

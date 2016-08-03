@@ -1,9 +1,11 @@
 #![feature(custom_derive, plugin)]
 #![plugin(serde_macros)]
 extern crate serde_json;
+extern crate serde;
 extern crate handlebars;
 extern crate clang;
 extern crate clap;
+extern crate rand;
 
 #[cfg(test)]
 extern crate tempdir;

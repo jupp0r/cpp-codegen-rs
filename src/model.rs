@@ -2,13 +2,15 @@ use clang::{Entity, EntityKind, EntityVisitResult, TranslationUnit};
 use std::vec::Vec;
 use std::string::String;
 use std::option::Option;
+use serde::ser::Serializer;
+use rand::{self, Rng};
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
+#[derive(Serialize, Debug, PartialEq, Clone)]
 pub struct Model {
     pub interfaces: Vec<Interface>,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
+#[derive(Serialize, Debug, PartialEq, Clone)]
 pub struct Interface {
     pub name: String,
     pub namespaces: Vec<String>,
@@ -16,20 +18,21 @@ pub struct Interface {
     pub template_parameters: Option<Vec<TemplateParameter>>,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
+#[derive(Serialize, Debug, PartialEq, Clone)]
 pub struct Method {
     pub name: String,
     pub return_type: String,
     pub arguments: Vec<Argument>,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
+#[derive(Serialize, Debug, PartialEq, Clone)]
 pub struct Argument {
+    #[serde(serialize_with="serialize_argument_name_with")]
     pub name: Option<String>,
     pub argument_type: String,
 }
 
-#[derive(Serialize, Deserialize, Debug, PartialEq, Clone)]
+#[derive(Serialize, Debug, PartialEq, Clone)]
 pub struct TemplateParameter {
     pub type_name: String,
 }
@@ -141,4 +144,19 @@ fn is_interface(node: Entity) -> bool {
         .into_iter()
         .all(|method| method.get_kind() != EntityKind::Method || method.is_virtual_method());
     res
+}
+
+fn serialize_argument_name_with<'a, S: Serializer>(name: &'a Option<String>,
+                                                   serializer: &mut S)
+                                                   -> Result<(), S::Error> {
+    let s = match name {
+        &Some(ref n) => n.clone(),
+        &None => {
+            rand::thread_rng()
+                .gen_ascii_chars()
+                .take(10)
+                .collect::<String>().clone()
+        },
+    };
+    serializer.serialize_str(s.to_lowercase().as_str())
 }
