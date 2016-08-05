@@ -10,9 +10,7 @@ mod tests {
     use serde_json;
 
     const INTERFACE: &'static str = r#"
-#pragma once
-
-namespace rtc { namespace sample {
+namespace foo { namespace sample {
 
 struct Interface {
     virtual ~Interface() = default;
@@ -25,8 +23,6 @@ struct Interface {
 "#;
 
     const TEMPLATE_INTERFACE: &'static str = r#"
-#pragma once
-
 namespace foo { namespace bar {
 
 template <typename T, typename U, class V>
@@ -90,8 +86,6 @@ class Baz {
     fn should_generate_random_names_for_anonymous_method_arguments() {
 
         const INTERFACE_WITH_NAMELESS_ARGUMENT_METHODS: &'static str = r#"
-            #pragma once
-
             struct Foo {
                 virtual void noArgumentName(double) = 0;
             };
@@ -101,5 +95,24 @@ class Baz {
         assert!(serde_json::ser::to_string(&model.interfaces[0].methods[0].arguments[0].name)
             .unwrap()
             .len() > 0)
+    }
+
+    #[test]
+    fn should_parse_template_methods() {
+
+        const INTERFACE_WITH_TEMPLATE_METHODS: &'static str = r#"
+            struct Foo {
+                template <typename T> void foo(T bar);
+            };
+            "#;
+
+        let model = create_model(INTERFACE_WITH_TEMPLATE_METHODS);
+        assert_eq!(model.interfaces[0]
+                           .clone()
+                           .methods[0]
+                       .clone()
+                       .template_arguments
+                       .unwrap(),
+                   vec![TemplateParameter { type_name: "T".to_string() }])
     }
 }

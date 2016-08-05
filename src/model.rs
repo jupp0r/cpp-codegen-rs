@@ -1,4 +1,4 @@
-use clang::{Entity, EntityKind, EntityVisitResult, TranslationUnit};
+use clang::{Entity, EntityKind, EntityVisitResult, TemplateArgument, TranslationUnit};
 use std::vec::Vec;
 use std::string::String;
 use std::option::Option;
@@ -23,6 +23,7 @@ pub struct Method {
     pub name: String,
     pub return_type: String,
     pub arguments: Vec<Argument>,
+    pub template_arguments: Option<Vec<TemplateParameter>>,
 }
 
 #[derive(Serialize, Debug, PartialEq, Clone)]
@@ -66,7 +67,7 @@ fn build_model(model: &mut Model, node: Entity, parent: Entity) -> EntityVisitRe
             model.interfaces.push(Interface {
                 name: node.get_name().unwrap(),
                 namespaces: parse_namespaces(parent),
-                methods: parse_virtual_methods(node),
+                methods: parse_methods(node),
                 template_parameters: parse_template_parameters(node),
             });
             EntityVisitResult::Continue
@@ -89,11 +90,11 @@ fn parse_namespaces(node: Entity) -> Vec<String> {
     namespace_list
 }
 
-fn parse_virtual_methods(node: Entity) -> Vec<Method> {
+fn parse_methods(node: Entity) -> Vec<Method> {
     node.get_children()
         .into_iter()
         .filter(|method| {
-            method.is_virtual_method() && method.get_kind() != EntityKind::Destructor &&
+            method.get_kind() != EntityKind::Destructor &&
             method.get_kind() != EntityKind::Constructor
         })
         .map(parse_method)
@@ -105,6 +106,7 @@ fn parse_method(node: Entity) -> Method {
         name: node.get_name().unwrap(),
         return_type: "void".to_string(),
         arguments: parse_arguments(node),
+        template_arguments: parse_template_parameters(node),
     }
 }
 
