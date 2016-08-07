@@ -13,11 +13,10 @@ template
 {{/if ~}}
 class Mock{{name}} : public {{name}} {
 {{#each methods ~}}
-    MOCK_METHOD{{len arguments}}({{name}}, {{return_type}}({{#each arguments}}{{argument_type}}{{#unless @last}}, {{/unless}}{{/each}}));
+    MOCK_METHOD{{len arguments}}{{log ../name}}{{#if ../template_parameters}}_T{{/if}}({{name}}, {{return_type}}({{#each arguments}}{{argument_type}}{{#unless @last}}, {{/unless}}{{/each}}));
 {{/each ~}}
 };
 {{#each namespaces~}}
 }
 {{/each ~}}
-
 {{/each ~}}

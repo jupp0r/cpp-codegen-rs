@@ -12,6 +12,8 @@ serde_json = "*"
 serde_macros = "*"
 clap = "*"
 rand = "*"
+log = "*"
+env_logger = "*"
 
 [dependencies.clang]
 version = "*"
