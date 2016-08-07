@@ -10,6 +10,10 @@ extern crate rand;
 #[cfg(test)]
 extern crate tempdir;
 
+#[macro_use]
+extern crate log;
+extern crate env_logger;
+
 use clang::{Clang, Index};
 
 use clap::{App, Arg};
@@ -24,6 +28,8 @@ pub mod template;
 mod parser_tests;
 
 fn main() {
+    env_logger::init().unwrap();
+
     let matches = App::new("cpp-codegen-rs")
         .version("0.1")
         .author("Jupp Müller <jupp0r@gmail.com>")
