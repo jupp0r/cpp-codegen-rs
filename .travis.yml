@@ -4,7 +4,7 @@ dist: trusty
 
 cache:
   directories:
-  - /clang
+  - ~/llvm
 
 matrix:
   include:
@@ -14,14 +14,14 @@ matrix:
 #      rust: nightly
 
 install:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo ./build_linux.sh; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./build_linux.sh; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
         brew config;
         brew update;
         brew install -v https://raw.githubusercontent.com/Homebrew/homebrew-versions/master/llvm38.rb; fi
 
 script:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export LIBCLANG_STATIC_PATH=/clang/lib; fi
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export LIBCLANG_STATIC_PATH=~/clang/lib; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export LLVM_CONFIG_PATH=/usr/local/bin/llvm-config-3.8; export LIBCLANG_STATIC_PATH=`/usr/local/bin/llvm-config-3.8 --libdir`; fi
   - cargo build --verbose
   - RUST_TEST_THREADS=1 cargo test --verbose
