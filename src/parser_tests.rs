@@ -55,6 +55,12 @@ class Baz {
     }
 
     #[test]
+    fn should_list_namespaces() {
+        let model = create_model(INTERFACE);
+        assert!(model.interfaces[0].namespaces == vec!["foo".to_string(), "sample".to_string()]);
+    }
+
+    #[test]
     fn should_not_include_destructors() {
         let model = create_model(INTERFACE);
         assert!(!model.interfaces[0]
