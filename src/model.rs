@@ -1,4 +1,4 @@
-use clang::{Entity, EntityKind, EntityVisitResult, TemplateArgument, TranslationUnit};
+use clang::{Entity, EntityKind, EntityVisitResult, TranslationUnit};
 use std::vec::Vec;
 use std::string::String;
 use std::option::Option;
