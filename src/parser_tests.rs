@@ -115,4 +115,36 @@ class Baz {
                        .unwrap(),
                    vec![TemplateParameter { type_name: "T".to_string() }])
     }
+
+    #[test]
+    fn should_parse_arguments_with_namespaced_types() {
+        const INTERFACE_WITH_NAMESPACED_METHOD_PARAMETERS: &'static str = r#"
+           namespace a { namespace b {
+             using c = int;
+           }}
+
+           struct A {
+               virtual void method(a::b::c abc);
+           };
+           "#;
+
+        let model = create_model(INTERFACE_WITH_NAMESPACED_METHOD_PARAMETERS);
+        println!("{:?}", model);
+        assert_eq!(model
+                   .interfaces[0]
+                   .clone()
+                   .methods[0]
+                   .clone()
+                   .arguments[0]
+                   .argument_type
+                , "a::b::c".to_string());
+        assert_eq!(model
+                   .interfaces[0]
+                   .clone()
+                   .methods[0]
+                   .clone()
+                   .arguments[0]
+                   .name
+                   , Some("abc".to_string()));
+    }
 }
