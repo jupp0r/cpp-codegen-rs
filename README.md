@@ -39,7 +39,7 @@ struct Interface {
 The corresponding [GoogleTest](https://github.com/google/googletest)
 mock object would look like this:
 
-```
+``` c++
 #pragma once
 #include <gmock/gmock.h>
 
@@ -52,7 +52,7 @@ class MockInterface : public Interface {
 cpp-codegen-rs parses the C++ header, and creates a `Model` object out of the abstract syntax tree defined by the header. The `Model` is then passed to a template file. To achieve the desired transformation, a suitable template looks like this:
 
 
-```
+``` c++
 // THIS FILE IS GENERATED, CHANGING IT IS FUTILE
 #pragma once
 #include <gmock/gmock.h>
@@ -76,7 +76,7 @@ also deals with namespaces and class templates, can be found in
 
 In order to perform the actual compilation, cpp-codegen-rs is invoked with the following parameters
 
-```
+``` bash
 cpp_codegen_rs interface.h -t templates/gmock.hbs
 ```
 
