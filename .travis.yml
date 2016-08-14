@@ -9,9 +9,9 @@ cache:
 matrix:
   include:
     - os: linux
-      rust: nightly
+      rust: stable
 #    - os: osx
-#      rust: nightly
+#      rust: stable
 
 install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./build_linux.sh; fi

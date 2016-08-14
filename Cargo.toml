@@ -3,14 +3,17 @@ name = "cpp_codegen_rs"
 version = "0.1.0"
 authors = ["Jupp Müller <jupp0r@gmail.com>"]
 license = "MIT"
+build = "src/build.rs"
 
 [dev-dependencies]
 tempdir = "*"
 
+[build-dependencies]
+serde_codegen = "*"
+
 [dependencies]
 serde = "*"
 serde_json = "*"
-serde_macros = "*"
 clap = "*"
 rand = "*"
 log = "*"
