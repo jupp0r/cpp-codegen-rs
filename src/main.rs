@@ -22,8 +22,11 @@ use std::boxed::Box;
 
 mod model;
 mod template;
-mod parser_tests;
 mod cmdline;
+mod parser;
+
+#[cfg(test)]
+mod parser_tests;
 
 fn main() {
     env_logger::init().unwrap();
