@@ -3,7 +3,7 @@ name = "cpp_codegen_rs"
 version = "0.1.0"
 authors = ["Jupp Müller <jupp0r@gmail.com>"]
 license = "MIT"
-build = "src/build.rs"
+build = "build.rs"
 
 [dev-dependencies]
 tempdir = "*"
