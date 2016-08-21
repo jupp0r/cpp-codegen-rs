@@ -19,6 +19,7 @@ use handlebars::Handlebars;
 use std::path::Path;
 use std::error::Error;
 use std::boxed::Box;
+use std::env;
 
 mod model;
 mod template;
@@ -29,8 +30,6 @@ mod parser;
 mod parser_tests;
 
 fn main() {
-    env_logger::init().unwrap();
-
     let matches = cmdline::build_argument_parser().get_matches();
 
     let clang = Clang::new().expect("create clang parser");
@@ -41,6 +40,15 @@ fn main() {
             None => vec!["-x", "c++"],
             Some(vals) => vec!["-x", "c++"].into_iter().chain(vals).collect::<Vec<_>>(),
         };
+    let mut builder = env_logger::LogBuilder::new();
+    let verbosity = &match matches.occurrences_of("verbose") {
+        1 => "info".to_string(),
+        2 => "debug".to_string(),
+        _ => env::var("RUST_LOG").unwrap_or("".to_string()),
+    };
+    builder.parse(&verbosity);
+    builder.init().unwrap();
+
     let tu = match index.parser(input).arguments(&clang_flags).parse() {
         Ok(x) => x,
         Err(e) => panic!(format!("{:?}", e)),
