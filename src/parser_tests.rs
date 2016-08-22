@@ -8,6 +8,9 @@ mod tests {
     use tempdir::TempDir;
 
     use serde_json;
+    use std::fmt::Debug;
+
+    use response_file::ExtendWithResponseFile;
 
     const INTERFACE: &'static str = r#"
 namespace foo { namespace sample {
@@ -36,6 +39,11 @@ class Baz {
 "#;
 
     fn create_model(input: &str) -> Model {
+        create_model_with_args(input, &[&"-x", &"c++", &"-std=c++14"])
+    }
+
+    fn create_model_with_args<S: AsRef<str> + Debug>(input: &str, args: &[S]) -> Model {
+        println!("input: {:?} args: {:?}", input, args);
         let tmp_dir = TempDir::new("cpp-codegen").expect("create temp dir");
         let file_path = tmp_dir.path().join("interface.h");
         let mut tmp_file = File::create(&file_path).expect("create temp file");
@@ -43,11 +51,12 @@ class Baz {
         let clang = Clang::new().expect("instantiate clang");
         let index = Index::new(&clang, false, false);
         let tu = index.parser(&file_path)
-            .arguments(&[&"-x", &"c++", &"-std=c++14"])
+            .arguments(args)
             .parse()
             .expect("parse interface");
         Model::new(&tu)
     }
+
 
     #[test]
     fn should_parse() {
@@ -136,21 +145,43 @@ class Baz {
 
         let model = create_model(INTERFACE_WITH_NAMESPACED_METHOD_PARAMETERS);
         println!("{:?}", model);
-        assert_eq!(model
-                   .interfaces[0]
-                   .clone()
-                   .methods[0]
-                   .clone()
-                   .arguments[0]
-                   .argument_type
-                , "a::b::c".to_string());
-        assert_eq!(model
-                   .interfaces[0]
-                   .clone()
-                   .methods[0]
-                   .clone()
-                   .arguments[0]
-                   .name
-                   , Some("abc".to_string()));
+        assert_eq!(model.interfaces[0]
+                               .clone()
+                               .methods[0]
+                           .clone()
+                           .arguments[0]
+                       .argument_type,
+                   "a::b::c".to_string());
+        assert_eq!(model.interfaces[0]
+                               .clone()
+                               .methods[0]
+                           .clone()
+                           .arguments[0]
+                       .name,
+                   Some("abc".to_string()));
+    }
+
+    #[test]
+    fn should_support_response_file() {
+        const INTERFACE_WITH_RESPONSE_FILE_DEFINE: &'static str = r#"
+           #ifdef FLAG
+           struct A {
+               virtual void method(int abc);
+           };
+           #endif
+       "#;
+        const RESPONSE_FILE: &'static str = "-x;c++;-std=c++14;-DFLAG";
+        let tmp_dir = TempDir::new("cpp-codegen").expect("create temp dir");
+        let response_file_path = tmp_dir.path().join("interface.rsp");
+        let mut response_file = File::create(&response_file_path).expect("create temp file");
+        response_file.write(RESPONSE_FILE.as_bytes()).expect("write file");
+        let model = create_model_with_args(INTERFACE_WITH_RESPONSE_FILE_DEFINE,
+                                           &vec!["@".to_string() +
+                                            &response_file_path.to_string_lossy()]
+                                           .into_iter()
+                                           .extend_with_response_file()
+                                           .collect::<Vec<_>>());
+
+        assert_eq!(model.interfaces[0].name, "A".to_string());
     }
 }

@@ -25,6 +25,9 @@ mod model;
 mod template;
 mod cmdline;
 mod parser;
+mod response_file;
+
+use response_file::ExtendWithResponseFile;
 
 #[cfg(test)]
 mod parser_tests;
@@ -36,9 +39,14 @@ fn main() {
     let index = Index::new(&clang, false, false);
     let input = matches.value_of("INPUT").expect("input missing");
     let clang_flags =
-        match matches.values_of("Flags") {
-            None => vec!["-x", "c++"],
-            Some(vals) => vec!["-x", "c++"].into_iter().chain(vals).collect::<Vec<_>>(),
+        match matches.values_of("FLAGS") {
+            None => vec!["-x".to_string(), "c++".to_string()],
+            Some(vals) => vec!["-x", "c++"]
+                .into_iter()
+                .chain(vals)
+                .map(String::from)
+                .extend_with_response_file()
+                .collect::<Vec<_>>(),
         };
     let mut builder = env_logger::LogBuilder::new();
     let verbosity = &match matches.occurrences_of("verbose") {
