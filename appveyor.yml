@@ -31,5 +31,4 @@ deploy:
     secure: aFuuIGpdj5nf4v6gDDv1bfL3Jhkk4ktsY3SC0WICL+2w2RDOH/xK1HVq2Dl3Ehnp
   artifact: cpp_codegen_windows.zip
   on:
-    branch: master
     appveyor_repo_tag: true
