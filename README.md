@@ -1,4 +1,4 @@
-A Code Generator for C++ Interfaces [![Build Status](https://travis-ci.org/jupp0r/cpp-codegen-rs.svg?branch=master)](https://travis-ci.org/jupp0r/cpp-codegen-rs)[![Coverage Status](https://coveralls.io/repos/github/jupp0r/cpp-codegen-rs/badge.svg?branch=master)](https://coveralls.io/github/jupp0r/cpp-codegen-rs?branch=master)
+A Code Generator for C++ Interfaces [![Build Status](https://travis-ci.org/jupp0r/cpp-codegen-rs.svg?branch=master)](https://travis-ci.org/jupp0r/cpp-codegen-rs)[![Build status](https://ci.appveyor.com/api/projects/status/nov0lxhgce7dwjvl/branch/master?svg=true)](https://ci.appveyor.com/project/jupp0r/cpp-codegen-rs/branch/master)[![Coverage Status](https://coveralls.io/repos/github/jupp0r/cpp-codegen-rs/badge.svg?branch=master)](https://coveralls.io/github/jupp0r/cpp-codegen-rs?branch=master)
 ===================================
 cpp-codegen-rs uses libclang to read C++ class definitions and
 generate code. Example use cases include the generation of Google Mock
