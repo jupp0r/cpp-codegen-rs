@@ -12,7 +12,7 @@ build_script:
   - cargo build --verbose --release --features clang_3_8
   - md deploy
   - move target\release\cpp_codegen_rs.exe deploy\cpp_codegen_windows.exe
-  - copy C:\LLVM\lib\clang.dll deploy\clang.dll
+  - copy C:\LLVM\bin\clang.dll deploy\clang.dll
   - 7z a cpp_codegen_windows.zip deploy\*.*
 
 test_script:
