@@ -10,8 +10,26 @@ install:
 
 build_script:
   - cargo build --verbose --release --features clang_3_8
+  - md deploy
+  - move target\release\cpp_codegen_rs.exe deploy\cpp_codegen_windows.exe
+  - copy C:\LLVM\lib\clang.dll deploy\clang.dll
+  - 7z a cpp_codegen_windows.zip deploy\*.*
 
 test_script:
   - set RUST_BACKTRACE=1
   - set RUST_TEST_THREADS=1
   - cargo test --verbose -- --nocapture
+
+artifacts:
+  - path: cpp_codegen_windows.zip
+    name: Releases
+
+deploy:
+  description: ''
+  provider: GitHub
+  auth_token:
+    secure: aFuuIGpdj5nf4v6gDDv1bfL3Jhkk4ktsY3SC0WICL+2w2RDOH/xK1HVq2Dl3Ehnp
+  artifact: cpp_codegen_windows.zip
+  on:
+    branch: master
+    appveyor_repo_tag: true

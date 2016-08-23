@@ -20,7 +20,7 @@ install:
 script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export LIBCLANG_STATIC_PATH=~/clang/lib; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export LLVM_CONFIG_PATH=/clang/bin/llvm-config; fi
-  - cargo build --verbose --features "clang_3_8 static"
+  - cargo build --verbose --release --features "clang_3_8 static"
   - RUST_TEST_THREADS=1 cargo test --verbose --features "clang_3_8 static"
 
 after_success: |
@@ -36,3 +36,28 @@ after_success: |
     cd ../.. &&
     RUST_TEST_THREADS=1 kcov --coveralls-id=$TRAVIS_JOB_ID --exclude-pattern=/.cargo target/kcov target/debug/cpp_codegen_rs-*;
   fi
+
+before_deploy: |
+  if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+    mv target/release/cpp_codegen_rs target/release/cpp_codegen_linux
+  else if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+    mv target/release/cpp_codegen_rs target/release/cpp_codegen_osx
+  fi
+
+deploy:
+  - provider: releases
+    api_key:
+      - secure: "hEt0C0njTFYbJGWdC3gp0r+SmKC/rnhOi4OChc2p+bEH+2TIGltXxwyrwoicMikhHr2FhBwDiAgbEE85okcKxkYvBsAiH4PuiQBhzJq50QVHDcdW5HjZbBqWyYdANJrdkya68SbzjHKMSvf47W1HyX2uzGkEFSq4lp+GI8TZIZPy88XeHLOOT05XpBOJnOwIVpuH3ilP7bN1QeAM0OVc+aKJXYQkX5i0JG0eYnQXp8/QPfykmVXUSFzvDqP11eK+FPqtGbwKVkC9YpD9LtgOldylFTxJdWpa0UY05ttaKReaU2Ca7X0qIYn8/hG6GmI9PJNfj2awWczO4O2/1+mRxqbBDaW8syvXFoNRz0X54ZvWwJFLu3v3uTbUxnB0QwoV8s9mgRvaodw4idN2aBr141lHtjes8br+9QRRy74ND5Gg0eUFIG6NCaDnqDNIi+vyCNIB+d1ptMCXmOi+vazqrCjJ2oLeWULk29TDqyM5FIqxAdkADmHkSYA0rwzqHADMgaT5qhbBM/yGPgAySnvPxxTLAPQRUFW1SE9g/gQkSrivaJ58cxowCQXdmkb1M0E4MCaCkWP2UxYlr7fWEaVT2NyALFr98RD3nxVNUo+9mbRtqWx1JJuvzIPgCVdGGFUAB8DcBZNIBwKzHUDRmPqPmHwE9dl3qRoV5r4gjON3bdQ="
+    file: "target/release/cpp_codegen_linux"
+    skip_cleanup: true
+    on:
+      tags: true
+      condition: "$TRAVIS_OS_NAME = linux"
+  - provider: releases
+    api_key:
+      - secure: "hEt0C0njTFYbJGWdC3gp0r+SmKC/rnhOi4OChc2p+bEH+2TIGltXxwyrwoicMikhHr2FhBwDiAgbEE85okcKxkYvBsAiH4PuiQBhzJq50QVHDcdW5HjZbBqWyYdANJrdkya68SbzjHKMSvf47W1HyX2uzGkEFSq4lp+GI8TZIZPy88XeHLOOT05XpBOJnOwIVpuH3ilP7bN1QeAM0OVc+aKJXYQkX5i0JG0eYnQXp8/QPfykmVXUSFzvDqP11eK+FPqtGbwKVkC9YpD9LtgOldylFTxJdWpa0UY05ttaKReaU2Ca7X0qIYn8/hG6GmI9PJNfj2awWczO4O2/1+mRxqbBDaW8syvXFoNRz0X54ZvWwJFLu3v3uTbUxnB0QwoV8s9mgRvaodw4idN2aBr141lHtjes8br+9QRRy74ND5Gg0eUFIG6NCaDnqDNIi+vyCNIB+d1ptMCXmOi+vazqrCjJ2oLeWULk29TDqyM5FIqxAdkADmHkSYA0rwzqHADMgaT5qhbBM/yGPgAySnvPxxTLAPQRUFW1SE9g/gQkSrivaJ58cxowCQXdmkb1M0E4MCaCkWP2UxYlr7fWEaVT2NyALFr98RD3nxVNUo+9mbRtqWx1JJuvzIPgCVdGGFUAB8DcBZNIBwKzHUDRmPqPmHwE9dl3qRoV5r4gjON3bdQ="
+    file: "target/release/cpp_codegen_osx"
+    skip_cleanup: true
+    on:
+      tags: true
+      condition: "$TRAVIS_OS_NAME = osx"
