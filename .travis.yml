@@ -39,9 +39,9 @@ after_success: |
 
 before_deploy: |
   if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-    mv target/release/cpp_codegen_rs target/release/cpp_codegen_linux
-  else if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-    mv target/release/cpp_codegen_rs target/release/cpp_codegen_osx
+    mv target/release/cpp_codegen_rs target/release/cpp_codegen_linux;
+  elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+    mv target/release/cpp_codegen_rs target/release/cpp_codegen_osx;
   fi
 
 deploy:
