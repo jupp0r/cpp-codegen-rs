@@ -23,8 +23,8 @@ install:
 script:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export LIBCLANG_STATIC_PATH=~/clang/lib; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export LLVM_CONFIG_PATH=/usr/local/bin/llvm-config-3.8; export LIBCLANG_STATIC_PATH=`/usr/local/bin/llvm-config-3.8 --libdir`; fi
-  - cargo build --verbose
-  - RUST_TEST_THREADS=1 cargo test --verbose
+  - cargo build --verbose --features "clang_3_8 static"
+  - RUST_TEST_THREADS=1 cargo test --verbose --features "clang_3_8 static"
 
 after_success: |
   if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then

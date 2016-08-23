@@ -5,6 +5,21 @@ authors = ["Jupp Müller <jupp0r@gmail.com>"]
 license = "MIT"
 build = "build.rs"
 
+[features]
+runtime = ["clang/runtime"]
+static = ["clang/static"]
+
+clang_3_5 = ["clang/clang_3_5"]
+clang_3_6 = ["clang/clang_3_6", "gte_clang_3_6"]
+clang_3_7 = ["clang/clang_3_7", "gte_clang_3_6", "gte_clang_3_7"]
+clang_3_8 = ["clang/clang_3_8", "gte_clang_3_6", "gte_clang_3_7", "gte_clang_3_8"]
+clang_3_9 = ["clang/clang_3_9", "gte_clang_3_6", "gte_clang_3_7", "gte_clang_3_8", "gte_clang_3_9"]
+
+gte_clang_3_6 = []
+gte_clang_3_7 = []
+gte_clang_3_8 = []
+gte_clang_3_9 = []
+
 [dev-dependencies]
 tempdir = "*"
 
@@ -18,10 +33,7 @@ clap = "*"
 rand = "*"
 log = "*"
 env_logger = "*"
-
-[dependencies.clang]
-version = "*"
-features = ["clang_3_8", "static"]
+clang = "*"
 
 [dependencies.handlebars]
 version = "*"
