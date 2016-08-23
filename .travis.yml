@@ -1,10 +1,15 @@
 language: rust
 sudo: required
 dist: trusty
+env:
+  global:
+    - secure: "YCOq0vX7+PsvQvoaanVTGrVepfnFJSUDvVRDoYGaXfeJQJaF1PBUbge9MF9WrRZT8J9wQ3QyoAuPaGEBH0Dr5MD8PVIP7n1BMh88Y49giF87A+H88pj953HqmJ94BfI16gjMsCYGOdSDBu2LFWIw6VzI8gxnQsa7QJ9JKzzSDX/HuyixAVr1HOSbTFHQmIkPLLQYJt7xJxouKGt3hztsx29RKH6P6/eiRB1prVA3uYlBCpsrpt3pBd+cJubDcA0nu0ZW7L3L3kIVp2QqgCfuuR3ktQQ7oYnhvAvGeQ5CnJZl4XoPc0s0lcqoGYefZhrA+Na23YjYHBTgdmh3qgXelF9+9SOKrYT6HTlnCk+SIQrPQSrOIUgJnE6BpyFWqlIDGyJjQnC7OVodAAyr82o+Bcoth17106jMordjVA6l8yZT6Cjx2ddfyb/b0vH6m6UumMwdgM9RLlJ5x+S6QppW+Qtm1U7FDZt0TO/MPxSYUWDmpO9GaFcKjCSyulpWS+mA1qyk0Q6a9fb1uqvjgZMvSgopw7Min+/0jpBh3DkwAjz8Amm1ZAuvEV7/8+a/QhluvSzjHAYzY4/E+qillNn/qJp2qST3pikCxbYiO7tP1mNEhR0u6T5XqjgtKQ5ALl3g/CQr7WZWF/NdRyLSkJvI2ULJmHsIIlcdwoF0FcHpEyc="
+    - secure: "dE+mh5SJ/Qac0J1QpVzUQwlzVDUWAROPEF3Pbv88wDkrFhM2qBBJKPHQ0IyHvHVvNhnxvYwEDNR79ejv7mTFa4SdeXvvt6qfYbTAfMIXWdOivzEt02lbz7zkeEet4LmlzTPntVJuKdTayEV8XnI+hT8X7xa9zvcsIOhaPBLDSZh9sOmxaQiEYk7eQCJ3VOg/Bbn2sZIqKUpfdusikuWJ/HofP+zR90zZH1JNmMVk45X8ymVzJVZ5tarYtZTMhSs5vEXuTimkJLHZg8s77w8ZmcIfY47CPWTSHATZpXqfBKJqopWZ8mUjBkBApHIN/AKEu+elNecXnGSNbbY/39nLdOBa1kKzpe1SI58ET/sMg9dxAnwHGffWimQoHM2dtUL2OAFEtAkxELcTDHiUGK8fyTagAPTeUeg92MG8kMFizFLllT1d/vAXHempquQxqSWLhxnzgZwz3I2E2j4/DjqeQuSpRCmHWKTsDJvB5ipjZJ65LGlt0LbSni4+wpDwrfpE3BqlPmhJPshu9xF4/fBojY/i6MIo6oe6KJGEmtuocpWlUuz8oUnkcsFmFEtlvHlxby4zfzw4tV9dQZYPQneYf/WCKt/H9stna80pMJi/9Nn1NOpfM4e1cPO0t0sKdYkldpGcPi85HGIcLg8b3pJV8oKpD8QxffEOGLK5Er8sSS4="
+    - secure: "YgqR3mAXrewMrO0pQsLUeMit1fnIDGF0VZFlb1SU0CgfxD3u6UYb2W0oivKAuWDZqGHSq/DArbEVgSifV7pYhZCEx3D4hQa/CwNjGAD8OQOPdSeUqiDemDgwADZn6T2K03oou4HgD6nex/ZVfwnrHC1gJh83fYtQvinLTFBQHUwOjK9lv9Nbi5UgCVh1W2lRQahJkn6jmgY6eN2YHEnqVw5LAzXCZ5bNTPy/Y7gLYKTBf10mkVhsXargakpu1P7wO8705wEioa+D0Jy61WW1VvJoRwdOo4e7xK+7R804Ib3WmBdIGQHpYYc8Cg/Ykluoth7Uq06PSvh0AKx5Jv7fuDTwMufnEn/rabQKetUihq4Z+0hzMlCrvESoepa/z0KhaHyFFk+vyii841UP1wgBcB1NInN0poA1l8IM9/SsgMcLLAJCEoIrozpj8iN8OYKui0H6Jvir4ciDbrYBm+GHjFAq3dfpPvjlIEajgtyXF5I9FtOh3n5VOVhPwL+IonwHHIa58yUT4jsSnNlWbkHwOuHmE39yX4WkgmBURosGOPOxSLIpIdbRtQo7oWymIIhbXwZZEaUd7wVebusAe2RnlMNmlG6mfFs++T7h9KJVv5J7OjUMyzVmmc044Xo8kmUKsJN+Py0NrXoRkNZdRjznKAB61+Vmq7rBtiG4acYnoX0="
 
 cache:
   directories:
-  - ~/llvm
+    - "~/llvm"
 
 matrix:
   include:
@@ -17,11 +22,17 @@ matrix:
 install:
   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then ./build_linux.sh; fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then ./build_osx.sh; fi
-script:
-  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then export LIBCLANG_STATIC_PATH=~/clang/lib; fi
-  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then export LLVM_CONFIG_PATH=/clang/bin/llvm-config; fi
-  - cargo build --verbose --features "clang_3_8 static"
-  - RUST_TEST_THREADS=1 cargo test --verbose --features "clang_3_8 static"
+
+script: |
+  if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+    export LLVM_CONFIG_PATH=/clang/bin/llvm-config
+    export LIBCLANG_STATIC_PATH=~/clang/lib
+  elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+    export LLVM_CONFIG_PATH=/clang/bin/llvm-config
+    export LIBCLANG_STATIC_PATH=/clang/lib
+  fi
+  cargo build --verbose --release --features "clang_3_8 static"
+  RUST_TEST_THREADS=1 cargo test --verbose --features "clang_3_8 static"
 
 after_success: |
   if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
@@ -34,5 +45,49 @@ after_success: |
     make &&
     sudo make install &&
     cd ../.. &&
-    RUST_TEST_THREADS=1 kcov --coveralls-id=$TRAVIS_JOB_ID --exclude-pattern=/.cargo target/kcov target/debug/cpp_codegen_rs-*;
+    RUST_TEST_THREADS=1 kcov --coveralls-id=$TRAVIS_JOB_ID --exclude-pattern=/.cargo target/kcov target/debug/cpp_codegen-*;
+    rm -rf master.tar.gz kcov-master
+  fi
+
+before_deploy: |
+  if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+    mv target/release/cpp_codegen target/release/cpp_codegen_linux;
+  elif [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+    mv target/release/cpp_codegen target/release/cpp_codegen_osx;
+  fi
+
+deploy:
+  - provider: releases
+    api_key:
+      - secure: hEt0C0njTFYbJGWdC3gp0r+SmKC/rnhOi4OChc2p+bEH+2TIGltXxwyrwoicMikhHr2FhBwDiAgbEE85okcKxkYvBsAiH4PuiQBhzJq50QVHDcdW5HjZbBqWyYdANJrdkya68SbzjHKMSvf47W1HyX2uzGkEFSq4lp+GI8TZIZPy88XeHLOOT05XpBOJnOwIVpuH3ilP7bN1QeAM0OVc+aKJXYQkX5i0JG0eYnQXp8/QPfykmVXUSFzvDqP11eK+FPqtGbwKVkC9YpD9LtgOldylFTxJdWpa0UY05ttaKReaU2Ca7X0qIYn8/hG6GmI9PJNfj2awWczO4O2/1+mRxqbBDaW8syvXFoNRz0X54ZvWwJFLu3v3uTbUxnB0QwoV8s9mgRvaodw4idN2aBr141lHtjes8br+9QRRy74ND5Gg0eUFIG6NCaDnqDNIi+vyCNIB+d1ptMCXmOi+vazqrCjJ2oLeWULk29TDqyM5FIqxAdkADmHkSYA0rwzqHADMgaT5qhbBM/yGPgAySnvPxxTLAPQRUFW1SE9g/gQkSrivaJ58cxowCQXdmkb1M0E4MCaCkWP2UxYlr7fWEaVT2NyALFr98RD3nxVNUo+9mbRtqWx1JJuvzIPgCVdGGFUAB8DcBZNIBwKzHUDRmPqPmHwE9dl3qRoV5r4gjON3bdQ=
+    file: "target/release/cpp_codegen_linux"
+    skip_cleanup: true
+    on:
+      tags: true
+      condition: "$TRAVIS_OS_NAME = linux"
+  - provider: releases
+    api_key:
+      - secure: hEt0C0njTFYbJGWdC3gp0r+SmKC/rnhOi4OChc2p+bEH+2TIGltXxwyrwoicMikhHr2FhBwDiAgbEE85okcKxkYvBsAiH4PuiQBhzJq50QVHDcdW5HjZbBqWyYdANJrdkya68SbzjHKMSvf47W1HyX2uzGkEFSq4lp+GI8TZIZPy88XeHLOOT05XpBOJnOwIVpuH3ilP7bN1QeAM0OVc+aKJXYQkX5i0JG0eYnQXp8/QPfykmVXUSFzvDqP11eK+FPqtGbwKVkC9YpD9LtgOldylFTxJdWpa0UY05ttaKReaU2Ca7X0qIYn8/hG6GmI9PJNfj2awWczO4O2/1+mRxqbBDaW8syvXFoNRz0X54ZvWwJFLu3v3uTbUxnB0QwoV8s9mgRvaodw4idN2aBr141lHtjes8br+9QRRy74ND5Gg0eUFIG6NCaDnqDNIi+vyCNIB+d1ptMCXmOi+vazqrCjJ2oLeWULk29TDqyM5FIqxAdkADmHkSYA0rwzqHADMgaT5qhbBM/yGPgAySnvPxxTLAPQRUFW1SE9g/gQkSrivaJ58cxowCQXdmkb1M0E4MCaCkWP2UxYlr7fWEaVT2NyALFr98RD3nxVNUo+9mbRtqWx1JJuvzIPgCVdGGFUAB8DcBZNIBwKzHUDRmPqPmHwE9dl3qRoV5r4gjON3bdQ=
+    file: "target/release/cpp_codegen_osx"
+    skip_cleanup: true
+    on:
+      tags: true
+      condition: "$TRAVIS_OS_NAME = osx"
+
+after_deploy: |
+  if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+    git clone --quiet https://${GITHUB_VERSION_BUMP_API_KEY}@github.com/jupp0r/cpp-codegen-rs.git > /dev/null 2>&1 &&
+    cd cpp-codegen-rs &&
+    git checkout master &&
+    export LLVM_CONFIG_PATH=/clang/bin/llvm-config &&
+    export LIBCLANG_STATIC_PATH=~/clang/lib &&
+    cargo login ${CARGO_API_KEY} &&
+    sed -i "0,/version.*/s//version = \"${TRAVIS_TAG}\"/" Cargo.toml &&
+    git config --global user.email "builds@travis-ci.com" &&
+    git config --global user.name "Travis CI" &&
+    git add Cargo.toml &&
+    git commit -m "Bump version to ${TRAVIS_TAG}" &&
+    cargo package &&
+    git push -u origin master > /dev/null 2>&1 &&
+    cargo publish
   fi

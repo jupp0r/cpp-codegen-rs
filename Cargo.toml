@@ -1,6 +1,10 @@
 [package]
-name = "cpp_codegen_rs"
-version = "0.1.0"
+name = "cpp_codegen"
+version = "0.1.15"
+description = "Generate Code from C++ classes"
+homepage = "https://github.com/jupp0r/cpp-codegen-rs"
+repository = "https://github.com/jupp0r/cpp-codegen-rs"
+readme = "README.md"
 authors = ["Jupp Müller <jupp0r@gmail.com>"]
 license = "MIT"
 build = "build.rs"
@@ -21,20 +25,20 @@ gte_clang_3_8 = []
 gte_clang_3_9 = []
 
 [dev-dependencies]
-tempdir = "*"
+tempdir = "0.3"
 
 [build-dependencies]
-serde_codegen = "*"
+serde_codegen = "0.8"
 
 [dependencies]
-serde = "*"
-serde_json = "*"
-clap = "*"
-rand = "*"
-log = "*"
-env_logger = "*"
-clang = "*"
+serde = "0.8"
+serde_json = "0.8"
+clap = "2"
+rand = "0.3"
+log = "0.3"
+env_logger = "0.3"
+clang = "0.12"
 
 [dependencies.handlebars]
-version = "*"
+version = "0.20"
 features = ["serde_type"]
