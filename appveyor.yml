@@ -9,7 +9,7 @@ install:
   - set LIBCLANG_PATH=C:\LLVM\bin
 
 build_script:
-  - cargo build --verbose --release
+  - cargo build --verbose --release --features clang_3_8
 
 test_script:
   - set RUST_BACKTRACE=1
