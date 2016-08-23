@@ -37,5 +37,5 @@ after_success: |
     make &&
     sudo make install &&
     cd ../.. &&
-    RUST_TEST_THREADS=1 kcov --coveralls-id=$TRAVIS_JOB_ID --exclude-pattern=/.cargo target/kcov target/debug/cpp-codegen-rs-*;
+    RUST_TEST_THREADS=1 kcov --coveralls-id=$TRAVIS_JOB_ID --exclude-pattern=/.cargo target/kcov target/debug/cpp_codegen_rs-*;
   fi
