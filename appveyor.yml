@@ -13,7 +13,7 @@ build_script:
   - md deploy
   - move target\release\cpp_codegen_rs.exe deploy\cpp_codegen_windows.exe
   - copy C:\LLVM\bin\libclang.dll deploy\libclang.dll
-  - 7z a cpp_codegen_windows.zip deploy\*.*
+  - 7z a cpp_codegen_windows.zip .\deploy\*.*
 
 test_script:
   - set RUST_BACKTRACE=1
