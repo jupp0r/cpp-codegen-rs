@@ -117,8 +117,8 @@ fn is_interface(node: Entity) -> bool {
 }
 
 pub fn serialize_argument_name_with<'a, S: Serializer>(name: &'a Option<String>,
-                                                       serializer: &mut S)
-                                                       -> Result<(), S::Error> {
+                                                       serializer: S)
+                                                       -> Result<S::Ok, S::Error> {
     let s = match name {
         &Some(ref n) => n.clone(),
         &None => {

@@ -2,16 +2,19 @@
 set -x
 set -o errexit
 sudo apt-get update --yes
-sudo apt-get install cmake git python g++ libc++-dev ninja-build zlib1g-dev libncursesw5-dev libffi-dev software-properties-common python-software-properties curl --yes
-sudo apt-add-repository "deb http://apt.llvm.org/trusty/ llvm-toolchain-trusty-3.8 main" --yes;
-curl http://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
-sudo apt-get update --yes
-sudo apt-get install llvm-3.8-dev --yes
+sudo apt-get install git python2.7 libpython2.7-dev g++ libc++-dev ninja-build zlib1g-dev libncursesw5-dev libffi-dev software-properties-common python-software-properties curl --yes
+sudo apt-get install -y build-essential
+wget https://cmake.org/files/v3.7/cmake-3.7.2.tar.gz
+tar xf cmake-3.7.2.tar.gz
+cd cmake-3.7.2
+./configure
+make -j `nproc`
+sudo make install
 pushd $HOME
-if [ ! -d "llvm/tools" ]; then rm -rf llvm; git clone -b release_38 --depth=1 https://github.com/llvm-mirror/llvm.git; fi
+if [ ! -d "llvm/tools" ]; then rm -rf llvm; git clone -b release_39 --depth=1 https://github.com/llvm-mirror/llvm.git; fi
 pushd llvm
 pushd tools
-if [ ! -d "clang" ]; then git clone -b release_38 --depth=1 https://github.com/llvm-mirror/clang.git; fi
+if [ ! -d "clang" ]; then git clone -b release_39 --depth=1 https://github.com/llvm-mirror/clang.git; fi
 popd
 mkdir -p _build
 pushd _build

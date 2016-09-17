@@ -7,7 +7,6 @@ repository = "https://github.com/jupp0r/cpp-codegen-rs"
 readme = "README.md"
 authors = ["Jupp Müller <jupp0r@gmail.com>"]
 license = "MIT"
-build = "build.rs"
 
 [features]
 runtime = ["clang/runtime"]
@@ -27,18 +26,17 @@ gte_clang_3_9 = []
 [dev-dependencies]
 tempdir = "0.3"
 
-[build-dependencies]
-serde_codegen = "0.8"
 
 [dependencies]
-serde = "0.8"
-serde_json = "0.8"
+serde = "0.9"
+serde_derive = "0.9"
+serde_json = "0.9"
 clap = "2"
 rand = "0.3"
 log = "0.3"
-env_logger = "0.3"
-clang = "0.12"
+env_logger = "0.4"
+clang = "0.14"
 
 [dependencies.handlebars]
-version = "0.20"
+version = "0.25"
 features = ["serde_type"]
