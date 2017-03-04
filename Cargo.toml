@@ -1,6 +1,6 @@
 [package]
 name = "cpp_codegen"
-version = "0.1.16"
+version = "0.2.0"
 description = "Generate Code from C++ classes"
 homepage = "https://github.com/jupp0r/cpp-codegen-rs"
 repository = "https://github.com/jupp0r/cpp-codegen-rs"
