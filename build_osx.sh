@@ -5,10 +5,10 @@ brew config;
 brew update;
 brew install --force curl ninja
 pushd $HOME
-if [ ! -d "llvm/tools" ]; then rm -rf llvm; git clone -b release_38 --depth=1 https://github.com/llvm-mirror/llvm.git; fi
+if [ ! -d "llvm/tools" ]; then rm -rf llvm; git clone -b release_39 --depth=1 https://github.com/llvm-mirror/llvm.git; fi
 pushd llvm
 pushd tools
-if [ ! -d "clang" ]; then git clone -b release_38 --depth=1 https://github.com/llvm-mirror/clang.git; fi
+if [ ! -d "clang" ]; then git clone -b release_39 --depth=1 https://github.com/llvm-mirror/clang.git; fi
 popd
 mkdir -p _build
 pushd _build

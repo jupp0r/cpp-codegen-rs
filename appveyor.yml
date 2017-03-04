@@ -1,15 +1,15 @@
 install:
-  - curl -sSf https://static.rust-lang.org/dist/rust-1.11.0-x86_64-pc-windows-msvc.exe -o rust.exe
-  - rust.exe /VERYSILENT /NORESTART /DIR="C:\Rust"
-  - set PATH=%PATH%;C:\Rust\bin
+  - curl -sSf https://static.rust-lang.org/rustup/dist/x86_64-pc-windows-msvc/rustup-init.exe -o rustup-init.exe
+  - rustup-init.exe -y
+  - set PATH=%PATH%;%USERPROFILE%\.cargo\bin
 
-  - curl -sSf http://llvm.org/releases/3.8.0/LLVM-3.8.0-win64.exe -o LLVM.exe
+  - curl -sSf http://releases.llvm.org/3.9.0/LLVM-3.9.0-win64.exe -o LLVM.exe
   - 7z x LLVM.exe -oC:\LLVM
   - set PATH=%PATH%;C:\LLVM\bin
   - set LIBCLANG_PATH=C:\LLVM\bin
 
 build_script:
-  - cargo build --verbose --release --features clang_3_8
+  - cargo build --verbose --release --features clang_3_9
   - md deploy
   - move target\release\cpp_codegen.exe deploy\cpp_codegen_windows.exe
   - copy C:\LLVM\bin\libclang.dll deploy\libclang.dll

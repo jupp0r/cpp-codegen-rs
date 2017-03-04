@@ -31,8 +31,8 @@ script: |
     export LLVM_CONFIG_PATH=/clang/bin/llvm-config
     export LIBCLANG_STATIC_PATH=/clang/lib
   fi
-  cargo build --verbose --release --features "clang_3_8 static"
-  RUST_TEST_THREADS=1 cargo test --verbose --features "clang_3_8 static"
+  cargo build --verbose --release --features "clang_3_9 static"
+  RUST_TEST_THREADS=1 cargo test --verbose --features "clang_3_9 static"
 
 after_success: |
   if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then

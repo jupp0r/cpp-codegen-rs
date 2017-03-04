@@ -1,8 +1,7 @@
-use handlebars::{Context, Helper, Handlebars, RenderContext, RenderError};
+use handlebars::{Helper, Handlebars, RenderContext, RenderError};
 use serde_json::value::Value;
 
-pub fn len(_: &Context,
-           h: &Helper,
+pub fn len(h: &Helper,
            _: &Handlebars,
            rc: &mut RenderContext)
            -> Result<(), RenderError> {
